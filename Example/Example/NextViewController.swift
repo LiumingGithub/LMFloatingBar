@@ -86,3 +86,17 @@ class FloatingAbleViewController: InteractiveViewController, FloatingKeepAble {
         print("[\(self.classForCoder)] Was kept by floating bar")
     }
 }
+
+extension FloatingAbleViewController: FloatingKeepAbleReloading {
+    
+    func didReloadInNavigationController(_ naviController: UINavigationController) {
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .cancel, target: self, action: #selector(FloatingAbleViewController.didCancellReShow))
+        navigationItem.title = "ReShow FloatingAble"
+        naviController.navigationBar.barStyle = .default
+    }
+    
+    @objc func didCancellReShow() -> Void {
+        lm.floatingNavigationController!.dismiss(animated: true, completion: nil)
+    }
+}

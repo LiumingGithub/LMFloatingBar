@@ -51,90 +51,20 @@ class NavigationController: UINavigationController, UIGestureRecognizerDelegate 
         // 可参照 GeneralTransitionControl
         delegate = floatingControl
         
-        interactivePopGestureRecognizer?.delegate = self
+        FloatingKeeperManager.shared.floatingBarPresenthandler = self
         
-        addNotification()
+        interactivePopGestureRecognizer?.delegate = self
     }
     
-    deinit {
-        removeNotification()
-    }
-    
-    // MARK: - Notifer
-    func addNotification() -> Void {
-        NotificationCenter.default.addObserver(self, selector: #selector(NavigationController.reshowKeepable(_:)), name: .lm_shouldReShowKeepAble, object: nil)
-    }
-    
-    func removeNotification() -> Void {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func reshowKeepable(_ notification: Notification) -> Void {
-        if let keepAble = notification.object as? AnyFloatingKeepAble {
-            let viewcontroller = PushedContainerViewController(keepAble)
-            lm.preset(UINavigationController(rootViewController: viewcontroller), animated: true, completion: nil)
-        }
-    }
     // MARK: -
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
-    // MARK: - UIGestureRecognizerDelegate
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return isInteractivePopEnabled && viewControllers.count > 1
-    }
 }
 
-class PushedContainerViewController: UIViewController {
+extension NavigationController: FloatingBarPresentHandler {
     
-    var keepAbleChild: AnyFloatingKeepAble!
-    
-    public init(_ keepAbleChild: AnyFloatingKeepAble) {
-        self.keepAbleChild = keepAbleChild
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    // MARK: -
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        addChild(keepAbleChild)
-        view.addSubview(keepAbleChild.view)
-        keepAbleChild.willMove(toParent: self)
-        
-        navigationItem.title = "Presented"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(PushedContainerViewController.doClosed))
-        navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        keepAbleChild.view.bounds = view.bounds
-    }
-    
-    // MARK: -
-    deinit {
-        print("func:[\(#function)], class: [\(self.classForCoder)]")
-    }
-    
-    // MARK: - actions
-    @objc func doClosed() -> Void {
-        (navigationController ?? self).dismiss(animated: true, completion: nil)
-        GeneralFloatingBarManager.shared.setFloatingHidden(false, animate: true)
+    func willReShow(_ keepAble: AnyFloatingKeepAble) -> UIViewController? {
+        return self
     }
 }
-

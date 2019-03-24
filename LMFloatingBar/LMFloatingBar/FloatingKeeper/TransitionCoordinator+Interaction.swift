@@ -10,7 +10,7 @@ import UIKit
 
 extension UIViewControllerTransitionCoordinator
 {
-    public func notifyWhenInteractionCancelled(_ handler: @escaping (UIViewControllerTransitionCoordinatorContext) -> Void) {
+    public func notifyWhenInteractionFinished(_ handler: @escaping (UIViewControllerTransitionCoordinatorContext) -> Void) {
         if #available(iOS 10.0, *) {
             notifyWhenInteractionChanges { (context) in
                 if context.initiallyInteractive

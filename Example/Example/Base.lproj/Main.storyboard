@@ -51,7 +51,7 @@
                     </navigationItem>
                     <connections>
                         <segue destination="nbW-LS-AOU" kind="show" identifier="Interactive" id="Vd1-Gu-w8h"/>
-                        <segue destination="lQD-UP-ZS5" kind="show" identifier="FloatigAble" id="kPr-18-rN7"/>
+                        <segue destination="lQD-UP-ZS5" kind="show" identifier="FloatingAble" id="kPr-18-rN7"/>
                         <segue destination="Ryz-wr-DtN" kind="show" identifier="NoInteractive" id="fNM-fP-TRy"/>
                     </connections>
                 </tableViewController>

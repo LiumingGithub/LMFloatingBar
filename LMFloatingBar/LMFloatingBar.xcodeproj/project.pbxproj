@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		472B2BC02247219C00ECE623 /* FloatingBarPresentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472B2BBF2247219C00ECE623 /* FloatingBarPresentContainer.swift */; };
+		472B2BC2224724EA00ECE623 /* FloatingBarPresentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472B2BC1224724EA00ECE623 /* FloatingBarPresentControl.swift */; };
+		472B2BC4224725C000ECE623 /* FloatingBarPresentInteractive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472B2BC3224725C000ECE623 /* FloatingBarPresentInteractive.swift */; };
+		472B2BC622472D9F00ECE623 /* FloatingBarPresentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472B2BC522472D9F00ECE623 /* FloatingBarPresentDelegate.swift */; };
+		472B2BC8224735C200ECE623 /* AnyViewControllerContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472B2BC7224735C200ECE623 /* AnyViewControllerContainer.swift */; };
 		4779EFEC2245DC6600865CBD /* LMFloatingBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 4779EFEA2245DC6600865CBD /* LMFloatingBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4779F0092245DCCA00865CBD /* LMTransitionKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4779F0082245DCCA00865CBD /* LMTransitionKit.framework */; };
 		4779F0452245DD7500865CBD /* FloatingKeeperControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4779F0352245DD7500865CBD /* FloatingKeeperControl.swift */; };
@@ -28,6 +33,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		472B2BBF2247219C00ECE623 /* FloatingBarPresentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBarPresentContainer.swift; sourceTree = "<group>"; };
+		472B2BC1224724EA00ECE623 /* FloatingBarPresentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBarPresentControl.swift; sourceTree = "<group>"; };
+		472B2BC3224725C000ECE623 /* FloatingBarPresentInteractive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBarPresentInteractive.swift; sourceTree = "<group>"; };
+		472B2BC522472D9F00ECE623 /* FloatingBarPresentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingBarPresentDelegate.swift; sourceTree = "<group>"; };
+		472B2BC7224735C200ECE623 /* AnyViewControllerContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyViewControllerContainer.swift; sourceTree = "<group>"; };
 		4779EFE72245DC6600865CBD /* LMFloatingBar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LMFloatingBar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4779EFEA2245DC6600865CBD /* LMFloatingBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LMFloatingBar.h; sourceTree = "<group>"; };
 		4779EFEB2245DC6600865CBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -87,8 +97,13 @@
 				4779F0342245DD7500865CBD /* FloatingKeeper */,
 				4779F05E2245DDF200865CBD /* _LMTransparentWindow.h */,
 				4779F05D2245DDF200865CBD /* _LMTransparentWindow.m */,
+				472B2BC7224735C200ECE623 /* AnyViewControllerContainer.swift */,
 				4779F0532245DD8200865CBD /* FloatingBarView.swift */,
 				4779F0562245DD8300865CBD /* GeneralFloatingBarManager.swift */,
+				472B2BBF2247219C00ECE623 /* FloatingBarPresentContainer.swift */,
+				472B2BC3224725C000ECE623 /* FloatingBarPresentInteractive.swift */,
+				472B2BC1224724EA00ECE623 /* FloatingBarPresentControl.swift */,
+				472B2BC522472D9F00ECE623 /* FloatingBarPresentDelegate.swift */,
 				4779EFEA2245DC6600865CBD /* LMFloatingBar.h */,
 				4779EFEB2245DC6600865CBD /* Info.plist */,
 			);
@@ -213,13 +228,18 @@
 				4779F0482245DD7500865CBD /* AnimatableBlockMaskView.swift in Sources */,
 				4779F0512245DD7500865CBD /* FloatingKeeperTransation.swift in Sources */,
 				4779F0452245DD7500865CBD /* FloatingKeeperControl.swift in Sources */,
+				472B2BC8224735C200ECE623 /* AnyViewControllerContainer.swift in Sources */,
 				4779F0492245DD7500865CBD /* BaseShapeMaskView.swift in Sources */,
+				472B2BC2224724EA00ECE623 /* FloatingBarPresentControl.swift in Sources */,
 				4779F0502245DD7500865CBD /* FloatingKeeperButton.swift in Sources */,
+				472B2BC02247219C00ECE623 /* FloatingBarPresentContainer.swift in Sources */,
+				472B2BC4224725C000ECE623 /* FloatingBarPresentInteractive.swift in Sources */,
 				4779F0582245DD8300865CBD /* FloatingBarView.swift in Sources */,
 				4779F0522245DD7500865CBD /* FloatingKeeperInteractive.swift in Sources */,
 				4779F06F2245E34D00865CBD /* TransitionCoordinator+Interaction.swift in Sources */,
 				4779F05F2245DDF200865CBD /* _LMTransparentWindow.m in Sources */,
 				4779F0472245DD7500865CBD /* LMSimpleImageLayer.swift in Sources */,
+				472B2BC622472D9F00ECE623 /* FloatingBarPresentDelegate.swift in Sources */,
 				4779F05B2245DD8300865CBD /* GeneralFloatingBarManager.swift in Sources */,
 				4779F04F2245DD7500865CBD /* FloatingKeepAble.swift in Sources */,
 				4779F0462245DD7500865CBD /* FloatingKeeperManager.swift in Sources */,

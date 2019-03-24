@@ -102,8 +102,10 @@ open class FrameAniTransitionProducer: AniTransitionProducerType {
                 let underFinalFrame = context.finalFrame(for: underVC)
                 underView.frame = underAimation.animatedFrame(from: underFinalFrame, uponAnimation)
                 
-                UIView.animate(withDuration: during, delay: 0, options: animationOptions, animations: {
+                if uponVC.presentingViewController == nil {
                     context.containerView.insertSubview(underView, at: 0)
+                }
+                UIView.animate(withDuration: during, delay: 0, options: animationOptions, animations: {
                     uponView.frame = uponFinalFrame
                     underView.frame = underFinalFrame
                 }, completion: { (_) in

@@ -52,7 +52,7 @@ public class FloatingKeepTransitionProducer: AniTransitionProducerType {
     
     public func animation(from fromVC: UIViewController, to toVC: UIViewController, For direction: TransitionConfiguration.Direction) -> UIViewControllerAnimatedTransitioning? {
         if case .backward = direction, fromVC is FloatingKeepAble {
-            let animation = FloatingKeeperPopTransation(FloatingKeeperPopTransation.Constant.defaultTransationDuring, interruptible: true)
+            let animation = FloatingKeeperPopTransation(FloatingKeeperPopTransation.Constant.defaultTransationDuring)
             animation.uponAnimationType = uponAnimationType
             animation.underAnimationType = underAnimationType
             return animation

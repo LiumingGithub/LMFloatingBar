@@ -22,7 +22,7 @@ class ViewController: UITableViewController {
         struct Segue {
             static let NoInteractive         = "NoInteractive"
             static let Interactive           = "Interactive"
-            static let FloatingAble          = "FloatigAble"
+            static let FloatingAble          = "FloatingAble"
         }
         static let data = DefaultCellData
     }

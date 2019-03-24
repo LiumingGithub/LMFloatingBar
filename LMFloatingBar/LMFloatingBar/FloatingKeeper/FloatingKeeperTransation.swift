@@ -11,7 +11,7 @@ import LMTransitionKit
 open class FloatingKeeperPopTransation: BaseAnimatedTransitioning {
     struct Constant {
         static let defaultTransationDuring: TimeInterval  = 0.3
-        static let defaultInteractiveDuring: TimeInterval = 0.5
+        static let defaultInteractiveDuring: TimeInterval = 0.3
     }
     
     public enum UponAnimationType: Int{
@@ -28,6 +28,10 @@ open class FloatingKeeperPopTransation: BaseAnimatedTransitioning {
     open override var isInterruptible: Bool {
         get { return true }
         set { }
+    }
+    
+    public init(_ duration: TimeInterval) {
+        super.init(duration, interruptible: true)
     }
     
     // MARK: -animate
@@ -56,8 +60,10 @@ open class FloatingKeeperPopTransation: BaseAnimatedTransitioning {
         // 是否被加入到浮窗的标识
         var wasKeeped = false
         
-        UIView.animate(withDuration: during, delay: 0, options: timeFunction.asAnimationOptions, animations: {
+        if uponVC.presentingViewController == nil{
             transitionContext.containerView.insertSubview(underView, at: 0)
+        }
+        UIView.animate(withDuration: during, delay: 0, options: timeFunction.asAnimationOptions, animations: {
             uponView.frame = uponFinalFrame
             underView.frame = underFinalFrame
         }, completion: { (_) in
@@ -69,32 +75,39 @@ open class FloatingKeeperPopTransation: BaseAnimatedTransitioning {
         })
         
         guard let coordinator = uponVC.transitionCoordinator else { return }
-        coordinator.notifyWhenInteractionCancelled { [weak self](context) in
+        coordinator.notifyWhenInteractionFinished { [weak self](context) in
             // 检查是否被加入到了浮窗
             guard let strongSelf = self,
-                case let .some(keptVC) = FloatingKeeperManager.shared.current,
-                keptVC == uponVC else { return }
+                strongSelf.shouldPerformNextAnimation(for: uponVC) else {
+                    return
+            }
+            
             // 如果加入到浮窗，修改wasKeeped， 并执行新的动画
             wasKeeped = true
-            
             // 执行动画
             strongSelf.animateForwardFloatingBar(
                 transitionContext,
                 during: Constant.defaultInteractiveDuring,
                 animateView: uponView,
-                finalFrame: uponInitialFrame,
-                keptVC: keptVC)
+                finalFrame: uponInitialFrame)
         }
+    }
+    
+    open func shouldPerformNextAnimation(for uponVC: UIViewController) -> Bool {
+        if let keptVC = FloatingKeeperManager.shared.current,
+            keptVC === uponVC {
+            return true
+        }
+        return false
     }
     
     // MARK: - private
     /// 添加到floatingbar的动画效果
-    private func animateForwardFloatingBar(
+    private func animateForwardFloatingBar (
         _  transitionContext: UIViewControllerContextTransitioning,
         during: TimeInterval,
         animateView: UIView,
-        finalFrame: CGRect,
-        keptVC: AnyFloatingKeepAble) -> Void {
+        finalFrame: CGRect) -> Void {
         
         // 时间变换
         let timefunc = self.timeFunction
@@ -115,7 +128,7 @@ open class FloatingKeeperPopTransation: BaseAnimatedTransitioning {
         UIView.animate(withDuration: during, animations: {
             animateView.frame = finalFrame
             UIView.performWithoutAnimation {
-                let mask = AnimatableBlockMaskView.init(animationDuring: during, animate: { (percent, rect) -> ShapeConvertable in
+                let mask = AnimatableBlockMaskView(animationDuring: during, animate: { (percent, rect) -> ShapeConvertable in
                     // 对percent应用时间变换
                     let newpercent = timefunc.tranform(from: percent)
                     // 计算当前mask的范围
@@ -135,16 +148,18 @@ open class FloatingKeeperPopTransation: BaseAnimatedTransitioning {
                 animateView.mask = mask
             }
         }, completion: { _ in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(100), execute: {
+            DispatchQueue.main.async {
                 //动画结束后发通知
-                NotificationCenter.default.post(name: .lm_didKeptByFloatingBar, object: keptVC)
-                FloatingKeeperManager.shared.didReceived(keptVC)
+                let current = FloatingKeeperManager.shared.current!
+                
+                NotificationCenter.default.post(name: .lm_didKeptByFloatingBar, object: current)
+                FloatingKeeperManager.shared.didReceived(current)
                 // 动画结束会必须调用此方法
                 transitionContext.completeTransition(true)
                 //清除动画残留
                 animateView.mask = nil
                 imageLayer.removeFromSuperlayer()
-            })
+            }
         })
     }
     

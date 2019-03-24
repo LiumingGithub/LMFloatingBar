@@ -16,7 +16,7 @@ public class GeneralFloatingBarManager: UIViewController {
             static let imageOffset: CGFloat = 8           // 图片和边框之间的距离
             static let minOffsetToBorder: CGFloat = 15    // floatingBar到边界的最小距离
             static let initalFrame =  CGRect(x: minOffsetToBorder, y: UIScreen.main.bounds.height * 0.5, width: length, height: length) // 初始frame
-            static let animateDuring: TimeInterval = 0.7  // 显示和隐藏动画时间
+            static let animateDuring: TimeInterval = 0.5  // 显示和隐藏动画时间
         }
         // 右下角浮窗按钮尺寸
         static let keepButtonSize = FloatingKeeperButton.Constant.recommendSize
@@ -85,7 +85,7 @@ public class GeneralFloatingBarManager: UIViewController {
         // keepButton config
         view.insertSubview(wantsKeptBtn, at: 0)
         wantsKeptBtn.setTitle("浮窗", for: .normal)
-        wantsKeptBtn.setTitle("松开添加浮窗", for: .selected)
+        wantsKeptBtn.setTitle("松开移除浮窗", for: .selected)
         wantsKeptBtn.titleLabel?.textAlignment = .center
         wantsKeptBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         wantsKeptBtn.setTitleColor(UIColor.white, for: .normal)
@@ -171,8 +171,8 @@ public class GeneralFloatingBarManager: UIViewController {
         }
     }
     
-    
     public func setFloatingBarAlpha(_ alpha: CGFloat) -> Void {
+        floatingBar.isHidden = false
         floatingBar.alpha = alpha
     }
     
@@ -286,7 +286,6 @@ public class GeneralFloatingBarManager: UIViewController {
     @objc func tapGestureHandler(_ gesture: UITapGestureRecognizer) -> Void {
         rectOfFloatingBarStored = floatingBar.frame
         FloatingKeeperManager.shared.showCurrentKeepAble(rectOfFloatingBarStored)
-        setFloatingHidden(true, animate: true)
     }
 }
 

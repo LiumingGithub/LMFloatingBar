@@ -54,10 +54,16 @@ extension UIViewController {
             gesture.resume()
         }
     }
+    
+    public func clearInteractiveGestures() -> Void {
+        if let needClear = view.gestureRecognizers?.filter({$0 is _InteractiveGestureRecognizer}) {
+            needClear.forEach({ $0.removeTarget(self, action: #selector(UIViewController._interactiveGestureHandler(_:)))})
+        }
+    }
 }
 
 // a UIScreenEdgePanGestureRecognizer can bind execute
-fileprivate class _InteractiveGestureRecognizer: UIScreenEdgePanGestureRecognizer {
+class _InteractiveGestureRecognizer: UIScreenEdgePanGestureRecognizer {
     
     typealias ExecuteClosure = () -> Void
     var execution: ExecuteClosure?
@@ -70,3 +76,45 @@ fileprivate class _InteractiveGestureRecognizer: UIScreenEdgePanGestureRecognize
         execution?()
     }
 }
+
+public protocol PresentationInteractiveControlType {
+    
+    var draggingEdge: InteractiveDraggingEdge? { get set}
+    
+    var draggingGesture: UIPanGestureRecognizer? { get set }
+}
+
+
+extension NameSpaceWrapper where T: UIViewController {
+    
+    public func interactivePresentation (
+        draggingEdge: InteractiveDraggingEdge,
+        execution closure: @escaping () -> Void) -> UIScreenEdgePanGestureRecognizer? {
+        guard let delegate = value.transitioningDelegate ?? value.presentingViewController?.transitioningDelegate,
+            var interactive = delegate as? PresentationInteractiveControlType
+            else {
+                return nil
+        }
+        
+        let gesture = _InteractiveGestureRecognizer(target: value, action: #selector(UIViewController._interactiveGestureHandler(_:)))
+        gesture.bind {
+            interactive.draggingEdge = draggingEdge
+            interactive.draggingGesture = gesture
+            closure()
+        }
+        gesture.edges = draggingEdge.asRectEdge
+        return gesture
+    }
+    
+    public func interactiveDismiss (
+        _ draggingEdge: InteractiveDraggingEdge = .left,
+        completion: (() -> Void)? = nil) -> UIScreenEdgePanGestureRecognizer? {
+        return interactivePresentation(draggingEdge: draggingEdge){ [weak value] in
+            guard let strongValue = value else {
+                return
+            }
+            strongValue.dismiss(animated: true, completion: completion)
+        }
+    }
+}
+

@@ -28,6 +28,9 @@ public class FloatingKeeperManager {
     /// 管理floatingBar的对象
     open var floatingBarManager: FloatingBarManagerType? = GeneralFloatingBarManager.shared
     
+    /// 管理 AnyFloatingKeepAble 重新展示
+    open var floatingBarPresenthandler: FloatingBarPresentHandler?
+    
     /// current floatingBar state
     /// 需要在每次的 manager(_:willReceive:) 方法中设定
     public var floatingBarImage: UIImage?
@@ -72,8 +75,18 @@ public class FloatingKeeperManager {
     
     // MARK: -
     public func showCurrentKeepAble(_ rectInWindow: CGRect) -> Void {
+        guard let keepAbleOfCurrent = current else {
+            return
+        }
+        
         floatingBarFrameOfCurrent = rectInWindow
-        NotificationCenter.default.post(name: .lm_shouldReShowKeepAble, object: current)
+        NotificationCenter.default.post(name: .lm_shouldReShowKeepAble, object: keepAbleOfCurrent)
+        
+        guard let handler = floatingBarPresenthandler else { return }
+        if let presenting = handler.willReShow(keepAbleOfCurrent) {
+            let wrapped = FloatingBarPresentContainer(contentChild: keepAbleOfCurrent)
+            presenting.lm.reShow(UINavigationController(rootViewController: wrapped), animated: true, completion: nil)
+        }
     }
 }
 

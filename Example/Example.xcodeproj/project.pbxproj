@@ -19,7 +19,6 @@
 		4779F0742245F28D00865CBD /* NextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4779F0732245F28D00865CBD /* NextViewController.swift */; };
 		4779F0762245F61000865CBD /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4779F0752245F61000865CBD /* SettingViewController.swift */; };
 		4779F0782245FB8A00865CBD /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4779F0772245FB8A00865CBD /* NavigationController.swift */; };
-		4779F07A2245FC3F00865CBD /* FloatingKeeperPresentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4779F0792245FC3F00865CBD /* FloatingKeeperPresentControl.swift */; };
 		4779F07C2246086F00865CBD /* LMTransitionKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4779F0122245DD0900865CBD /* LMTransitionKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4779F07D2246087300865CBD /* LMFloatingBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4779F0142245DD0F00865CBD /* LMFloatingBar.framework */; };
 		4779F07E2246087300865CBD /* LMFloatingBar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4779F0142245DD0F00865CBD /* LMFloatingBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -78,7 +77,6 @@
 		4779F0732245F28D00865CBD /* NextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextViewController.swift; sourceTree = "<group>"; };
 		4779F0752245F61000865CBD /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		4779F0772245FB8A00865CBD /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		4779F0792245FC3F00865CBD /* FloatingKeeperPresentControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingKeeperPresentControl.swift; sourceTree = "<group>"; };
 		4779F07F2246089300865CBD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -140,7 +138,6 @@
 				4779F0732245F28D00865CBD /* NextViewController.swift */,
 				4779F0772245FB8A00865CBD /* NavigationController.swift */,
 				4779F0752245F61000865CBD /* SettingViewController.swift */,
-				4779F0792245FC3F00865CBD /* FloatingKeeperPresentControl.swift */,
 				474161F5223642E600FB7540 /* Main.storyboard */,
 				474161F8223642E800FB7540 /* Assets.xcassets */,
 				474161FA223642E800FB7540 /* LaunchScreen.storyboard */,
@@ -322,7 +319,6 @@
 				4779F0722245ECF500865CBD /* ViewCtrollerCellData.swift in Sources */,
 				4779F0742245F28D00865CBD /* NextViewController.swift in Sources */,
 				474161F4223642E600FB7540 /* ViewController.swift in Sources */,
-				4779F07A2245FC3F00865CBD /* FloatingKeeperPresentControl.swift in Sources */,
 				474161F2223642E600FB7540 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

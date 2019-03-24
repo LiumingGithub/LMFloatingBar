@@ -1,31 +1,45 @@
 //
-//  PresentControl.swift
-//  LMFloatingKeeper
+//  File.swift
+//  LMFloatingBar
 //
-//  Created by 刘明 on 2019/3/20.
+//  Created by 刘明 on 2019/3/24.
 //  Copyright © 2019 ming.liu. All rights reserved.
 //
 
 import LMTransitionKit
-import LMFloatingBar
 
 extension NameSpaceWrapper where T: UIViewController {
     
-    public func preset(_ viewControllerToPresent: UIViewController,
+    public func reShow(_ viewControllerToPresent: UIViewController,
                        animated flag: Bool,
                        completion:(() -> Void)?) -> Void
-        {
-        FloatingKeeperPresentControl.shared.presentAnimate(from: value, to: viewControllerToPresent, animated: flag, completion: completion)
+    {
+        FloatingBarPresentControl.shared.presentAnimate(from: value, to: viewControllerToPresent, animated: flag, completion: completion)
     }
 }
 
 // 浮窗的present效果实现
-public class FloatingKeeperPresentControl: NSObject, UIViewControllerTransitioningDelegate {
+public class FloatingBarPresentControl: NSObject, PresentationInteractiveControlType, UIViewControllerTransitioningDelegate {
     
     // singleton
-    public static let shared = FloatingKeeperPresentControl()
+    public static let shared = FloatingBarPresentControl()
+    private override init() {
+        super.init()
+    }
+    
     // properties
-    var timeFunc = TransitionConfiguration.TimeFunction.easeOut
+    var timeFunc = TransitionConfiguration.TimeFunction.easeIn
+    
+    open var draggingEdge: InteractiveDraggingEdge?
+    open var draggingGesture: UIPanGestureRecognizer? {
+        didSet {
+            if let t = draggingGesture {
+                print("\(t)")
+            } else {
+                print(" null ")
+            }
+        }
+    }
     
     // MARK: -
     public func presentAnimate(from fromVC: UIViewController, to toVC: UIViewController, animated flag: Bool, completion:(() -> Void)?) -> Void {
@@ -37,20 +51,40 @@ public class FloatingKeeperPresentControl: NSObject, UIViewControllerTransitioni
     //MARK: - UIViewControllerTransitioningDelegate
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
+        if let _ = draggingGesture {
+            let animation = FloatingKeeperDismissTransation(0.3)
+            animation.uponAnimationType = .fromRight
+            animation.underAnimationType = .crowd
+            animation.timeFunction = .easeInOut
+            return animation
+        }
+        
         let floatingBarCurrentFrame = FloatingKeeperManager.shared.floatingBarFrameOfCurrent
-        return produceAnimation(dismissed, initialFrame: floatingBarCurrentFrame, isforPresented: false)
+        GeneralFloatingBarManager.shared.setFloatingHidden(false, animate: true)
+        return produceMaskAnimation(dismissed, initialFrame: floatingBarCurrentFrame, isforPresented: false)
     }
     
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let floatingBarCurrentFrame = FloatingKeeperManager.shared.floatingBarFrameOfCurrent
-        return produceAnimation(presented, initialFrame: floatingBarCurrentFrame, isforPresented: true)
+        GeneralFloatingBarManager.shared.setFloatingHidden(true, animate: true)
+        return produceMaskAnimation(presented, initialFrame: floatingBarCurrentFrame, isforPresented: true)
     }
     
-    // MARK: -
-    fileprivate func produceAnimation(
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        defer {
+            draggingGesture = nil
+        }
+        if let gesture = draggingGesture, let edge = draggingEdge {
+            return FloatingBarPresentInteractive(gesture, draggingEdge: edge)
+        }
+        return nil
+    }
+    
+    // MARK: - 生成从floatingbar位置的 mask 动画
+    fileprivate func produceMaskAnimation(
         _ uponViewController: UIViewController,
         initialFrame: CGRect,
-        transitionDuring: TimeInterval = 0.5,
+        transitionDuring: TimeInterval = 0.3,
         isforPresented: Bool) -> UIViewControllerAnimatedTransitioning {
         
         let timefuc = self.timeFunc
@@ -90,3 +124,12 @@ public class FloatingKeeperPresentControl: NSObject, UIViewControllerTransitioni
     }
 }
 
+class FloatingKeeperDismissTransation: FloatingKeeperPopTransation {
+    override func shouldPerformNextAnimation(for uponVC: UIViewController) -> Bool {
+        if let current = FloatingKeeperManager.shared.current {
+            FloatingKeeperManager.shared.willReceive(current)
+            return true
+        }
+        return false
+    }
+}
